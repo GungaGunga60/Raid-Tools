@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32526.322
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hero Manager", "Hero Manager\Hero Manager.csproj", "{D17441E9-ACDB-400C-8C10-BAB897603D19}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D17441E9-ACDB-400C-8C10-BAB897603D19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D17441E9-ACDB-400C-8C10-BAB897603D19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D17441E9-ACDB-400C-8C10-BAB897603D19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D17441E9-ACDB-400C-8C10-BAB897603D19}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {461E5447-8D7D-4AE0-B15C-8B93F2341CBE}
+	EndGlobalSection
+EndGlobal
