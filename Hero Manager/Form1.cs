@@ -16,6 +16,7 @@ namespace Hero_Manager
     public partial class Form1 : Form
     {
         private RaidToolkitClient api;
+        private StaticSkillData skillData;
 
         public Form1()
         {
@@ -24,25 +25,37 @@ namespace Hero_Manager
             this.api.Connect();
         }
 
+        private async Task EnsureStaticSkillData()
+        {
+            if (this.skillData == null)
+            {
+                this.skillData = await this.api.StaticDataApi.GetSkillData();
+            }
+        }
+
         private async void OnReloadHeroes(object sender, EventArgs e)
         {
             this.lvHeroes.Items.Clear();
             var accounts = await api.AccountApi.GetAccounts();
-            var skillData = await api.StaticDataApi.GetSkillData();
             var accountId = accounts.First().Id;
-            this.Text = string.Format("{0}'s Heroes", accounts.First().Name);
+            this.Text = string.Format("{0}'s Heroes (Loading...)", accounts.First().Name);
+            await this.EnsureStaticSkillData();
             foreach (var hero in await api.AccountApi.GetHeroes(accountId))
             {
-                // name, stars, level, books required, in vault?, locked?, gear count
+                // name, stars, level, food?, book?, books required, in vault?, locked?, gear count
                 ListViewItem item = new ListViewItem(hero.Name);
                 item.SubItems.Add(hero.Rank.Substring(5));
                 item.SubItems.Add(hero.Level.ToString());
-                item.SubItems.Add(CountBooksRequired(hero, skillData).ToString());
-                item.SubItems.Add(hero.InVault ? "X" : string.Empty);
+                item.SubItems.Add(hero.Marker == "Speed" ? "X" : String.Empty);
+                item.SubItems.Add(hero.Marker == "Support" ? "X" : String.Empty);
+                item.SubItems.Add(CountBooksRequired(hero, this.skillData).ToString());
+                item.SubItems.Add(hero.InVault ? "X" : String.Empty);
                 item.SubItems.Add(hero.Locked ? "X" : String.Empty);
                 item.SubItems.Add(hero.EquippedArtifactIds.Count.ToString());
+                
                 this.lvHeroes.Items.Add(item);
             }
+            this.Text = string.Format("{0}'s Heroes", accounts.First().Name);
         }
 
         private static int CountBooksRequired(Hero hero, StaticSkillData skillData)

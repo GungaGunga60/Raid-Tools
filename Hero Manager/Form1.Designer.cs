@@ -34,10 +34,12 @@
             this.chName = new System.Windows.Forms.ColumnHeader();
             this.chStars = new System.Windows.Forms.ColumnHeader();
             this.chLevel = new System.Windows.Forms.ColumnHeader();
+            this.chFood = new System.Windows.Forms.ColumnHeader();
+            this.chBook = new System.Windows.Forms.ColumnHeader();
+            this.chRequiredBooks = new System.Windows.Forms.ColumnHeader();
             this.chInVault = new System.Windows.Forms.ColumnHeader();
             this.chLocked = new System.Windows.Forms.ColumnHeader();
             this.chGearCount = new System.Windows.Forms.ColumnHeader();
-            this.chRequiredBooks = new System.Windows.Forms.ColumnHeader();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -68,10 +70,14 @@
             this.chName,
             this.chStars,
             this.chLevel,
+            this.chFood,
+            this.chBook,
             this.chRequiredBooks,
             this.chInVault,
             this.chLocked,
             this.chGearCount});
+            this.lvHeroes.FullRowSelect = true;
+            this.lvHeroes.GridLines = true;
             this.lvHeroes.HideSelection = false;
             this.lvHeroes.Location = new System.Drawing.Point(12, 41);
             this.lvHeroes.Name = "lvHeroes";
@@ -94,6 +100,21 @@
             // 
             this.chLevel.Text = "Level";
             // 
+            // chFood
+            // 
+            this.chFood.Text = "Food?";
+            this.chFood.Width = 75;
+            // 
+            // chBook
+            // 
+            this.chBook.Text = "Book?";
+            this.chBook.Width = 75;
+            // 
+            // chRequiredBooks
+            // 
+            this.chRequiredBooks.Text = "Books Required";
+            this.chRequiredBooks.Width = 175;
+            // 
             // chInVault
             // 
             this.chInVault.Text = "In Vault?";
@@ -108,11 +129,6 @@
             // 
             this.chGearCount.Text = "Gear Count";
             this.chGearCount.Width = 125;
-            // 
-            // chRequiredBooks
-            // 
-            this.chRequiredBooks.Text = "Books Required";
-            this.chRequiredBooks.Width = 175;
             // 
             // Form1
             // 
@@ -143,5 +159,7 @@
         private System.Windows.Forms.ColumnHeader chLocked;
         private System.Windows.Forms.ColumnHeader chGearCount;
         private System.Windows.Forms.ColumnHeader chRequiredBooks;
+        private System.Windows.Forms.ColumnHeader chFood;
+        private System.Windows.Forms.ColumnHeader chBook;
     }
 }
