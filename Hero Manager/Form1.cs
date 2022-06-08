@@ -17,6 +17,7 @@ namespace Hero_Manager
     {
         private RaidToolkitClient api;
         private StaticSkillData skillData;
+        private StaticHeroData heroData;
 
         public Form1()
         {
@@ -25,22 +26,89 @@ namespace Hero_Manager
             this.api.Connect();
         }
 
-        private async Task EnsureStaticSkillData()
+        private async Task EnsureStaticData()
         {
             if (this.skillData == null)
             {
                 this.skillData = await this.api.StaticDataApi.GetSkillData();
             }
+
+            if (this.heroData == null)
+            { 
+                this.heroData = await this.api.StaticDataApi.GetHeroData();
+            }
         }
 
         private async void OnReloadHeroes(object sender, EventArgs e)
+        {
+            await ReloadHeroes();
+        }
+
+        private async void OnFilterToMultiplesChanged(object sender, EventArgs e)
+        {
+            await ReloadHeroes();
+        }
+
+        private async void OnEpicsOrBetterChanged(object sender, EventArgs e)
+        {
+            await ReloadHeroes();
+        }
+
+        private async Task ReloadHeroes()
         {
             this.lvHeroes.Items.Clear();
             var accounts = await api.AccountApi.GetAccounts();
             var accountId = accounts.First().Id;
             this.Text = string.Format("{0}'s Heroes (Loading...)", accounts.First().Name);
-            await this.EnsureStaticSkillData();
-            foreach (var hero in await api.AccountApi.GetHeroes(accountId))
+            await this.EnsureStaticData();
+            List<Hero> heroes = new List<Hero>(await api.AccountApi.GetHeroes(accountId));
+            
+            for (int i = heroes.Count - 1; i >= 0; i--)
+            {
+                if (heroes[i].Deleted)
+                {
+                    heroes.RemoveAt(i);
+                }
+            }
+
+            if (this.cbMultiples.Checked)
+            {
+                Dictionary<string, List<Hero>> heroesByName = new Dictionary<string, List<Hero>>();
+                foreach (var hero in heroes)
+                {
+                    List<Hero> hs = null;
+                    if (!heroesByName.TryGetValue(hero.Name.ToLowerInvariant(), out hs))
+                    {
+                        hs = new List<Hero>();
+                        heroesByName[hero.Name.ToLowerInvariant()] = hs;
+                    }
+                    hs.Add(hero);
+                }
+
+                heroes.Clear();
+                foreach (List<Hero> hs in heroesByName.Values)
+                {
+                    if (hs.Count > 1)
+                    {
+                        heroes.AddRange(hs);
+                    }
+                }
+            }
+
+            if (this.cbEpicsOrBetter.Checked)
+            {
+                for (int i = heroes.Count - 1; i >= 0; i--)
+                {
+                    var hero = heroes[i];
+                    string rarity = heroData.HeroTypes[hero.TypeId].Rarity;
+                    if (rarity != "Epic" && rarity != "Legendary")
+                    {
+                        heroes.RemoveAt(i);
+                    }
+                }
+            }
+
+            foreach (var hero in heroes)
             {
                 // name, stars, level, food?, book?, books required, in vault?, locked?, gear count
                 ListViewItem item = new ListViewItem(hero.Name);

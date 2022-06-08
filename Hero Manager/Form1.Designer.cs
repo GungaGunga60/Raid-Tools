@@ -40,6 +40,8 @@
             this.chInVault = new System.Windows.Forms.ColumnHeader();
             this.chLocked = new System.Windows.Forms.ColumnHeader();
             this.chGearCount = new System.Windows.Forms.ColumnHeader();
+            this.cbMultiples = new System.Windows.Forms.CheckBox();
+            this.cbEpicsOrBetter = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -50,7 +52,7 @@
             this.reloadToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1800, 38);
+            this.menuStrip1.Size = new System.Drawing.Size(1339, 38);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -81,7 +83,7 @@
             this.lvHeroes.HideSelection = false;
             this.lvHeroes.Location = new System.Drawing.Point(12, 41);
             this.lvHeroes.Name = "lvHeroes";
-            this.lvHeroes.Size = new System.Drawing.Size(1776, 1372);
+            this.lvHeroes.Size = new System.Drawing.Size(1037, 1372);
             this.lvHeroes.TabIndex = 1;
             this.lvHeroes.UseCompatibleStateImageBehavior = false;
             this.lvHeroes.View = System.Windows.Forms.View.Details;
@@ -130,11 +132,37 @@
             this.chGearCount.Text = "Gear Count";
             this.chGearCount.Width = 125;
             // 
+            // cbMultiples
+            // 
+            this.cbMultiples.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbMultiples.AutoSize = true;
+            this.cbMultiples.Location = new System.Drawing.Point(1055, 79);
+            this.cbMultiples.Name = "cbMultiples";
+            this.cbMultiples.Size = new System.Drawing.Size(200, 34);
+            this.cbMultiples.TabIndex = 2;
+            this.cbMultiples.Text = "Filter to Multiples";
+            this.cbMultiples.UseVisualStyleBackColor = true;
+            this.cbMultiples.CheckedChanged += new System.EventHandler(this.OnFilterToMultiplesChanged);
+            // 
+            // cbEpicsOrBetter
+            // 
+            this.cbEpicsOrBetter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbEpicsOrBetter.AutoSize = true;
+            this.cbEpicsOrBetter.Location = new System.Drawing.Point(1055, 119);
+            this.cbEpicsOrBetter.Name = "cbEpicsOrBetter";
+            this.cbEpicsOrBetter.Size = new System.Drawing.Size(172, 34);
+            this.cbEpicsOrBetter.TabIndex = 3;
+            this.cbEpicsOrBetter.Text = "Epics or Better";
+            this.cbEpicsOrBetter.UseVisualStyleBackColor = true;
+            this.cbEpicsOrBetter.CheckedChanged += new System.EventHandler(this.OnEpicsOrBetterChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 30F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1800, 1425);
+            this.ClientSize = new System.Drawing.Size(1339, 1425);
+            this.Controls.Add(this.cbEpicsOrBetter);
+            this.Controls.Add(this.cbMultiples);
             this.Controls.Add(this.lvHeroes);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -161,5 +189,7 @@
         private System.Windows.Forms.ColumnHeader chRequiredBooks;
         private System.Windows.Forms.ColumnHeader chFood;
         private System.Windows.Forms.ColumnHeader chBook;
+        private System.Windows.Forms.CheckBox cbMultiples;
+        private System.Windows.Forms.CheckBox cbEpicsOrBetter;
     }
 }
