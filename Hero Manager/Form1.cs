@@ -1,5 +1,6 @@
 ﻿using Raid.Client;
-using Raid.DataModel;
+using Raid.Toolkit.DataModel;
+using Raid.Toolkit.DataModel.Enums;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace Hero_Manager
     {
         private RaidToolkitClient api;
         private StaticSkillData skillData;
-        private StaticHeroData heroData;
+        private StaticHeroTypeData heroData;
 
         public Form1()
         {
@@ -54,6 +55,11 @@ namespace Hero_Manager
             await ReloadHeroes();
         }
 
+        private async void OnIgnoreFactionGuardians(object sender, EventArgs e)
+        {
+            await ReloadHeroes();
+        }
+
         private async Task ReloadHeroes()
         {
             this.lvHeroes.Items.Clear();
@@ -61,6 +67,7 @@ namespace Hero_Manager
             var accountId = accounts.First().Id;
             this.Text = string.Format("{0}'s Heroes (Loading...)", accounts.First().Name);
             await this.EnsureStaticData();
+            var academy = await api.AccountApi.GetAcademy(accountId);
             List<Hero> heroes = new List<Hero>(await api.AccountApi.GetHeroes(accountId));
             
             for (int i = heroes.Count - 1; i >= 0; i--)
@@ -100,8 +107,20 @@ namespace Hero_Manager
                 for (int i = heroes.Count - 1; i >= 0; i--)
                 {
                     var hero = heroes[i];
-                    string rarity = heroData.HeroTypes[hero.TypeId].Rarity;
-                    if (rarity != "Epic" && rarity != "Legendary")
+                    var rarity = heroData.HeroTypes[hero.TypeId].Rarity;
+                    if (rarity != HeroRarity.Epic && rarity != HeroRarity.Legendary)
+                    {
+                        heroes.RemoveAt(i);
+                    }
+                }
+            }
+
+            if (this.cbIgnoreFactionGuardians.Checked)
+            {
+                for (int i = heroes.Count - 1; i >= 0; i--)
+                {
+                    var hero = heroes[i];
+                    if (IsFactionGuardian(hero, academy))
                     {
                         heroes.RemoveAt(i);
                     }
@@ -110,7 +129,7 @@ namespace Hero_Manager
 
             foreach (var hero in heroes)
             {
-                // name, stars, level, food?, book?, books required, in vault?, locked?, gear count
+                // name, stars, level, food?, book?, books required, in vault?, locked?, faction guardian?, gear count
                 ListViewItem item = new ListViewItem(hero.Name);
                 item.SubItems.Add(hero.Rank.Substring(5));
                 item.SubItems.Add(hero.Level.ToString());
@@ -119,6 +138,7 @@ namespace Hero_Manager
                 item.SubItems.Add(CountBooksRequired(hero, this.skillData).ToString());
                 item.SubItems.Add(hero.InVault ? "X" : String.Empty);
                 item.SubItems.Add(hero.Locked ? "X" : String.Empty);
+                item.SubItems.Add(!cbIgnoreFactionGuardians.Checked && IsFactionGuardian(hero, academy) ? "X" : String.Empty);
                 item.SubItems.Add(hero.EquippedArtifactIds.Count.ToString());
                 
                 this.lvHeroes.Items.Add(item);
@@ -137,6 +157,27 @@ namespace Hero_Manager
             }
 
             return booksRequired;
+        }
+
+        private static bool IsFactionGuardian(Hero hero, AcademyData academy)
+        {
+            Dictionary<HeroRarity, GuardianData> factionData = null;
+            if (academy.Guardians.TryGetValue(hero.Type.Faction, out factionData))
+            {
+                GuardianData guardianData = null;
+                if (factionData.TryGetValue(hero.Type.Rarity, out guardianData))
+                {
+                    foreach (var guardianSlot in guardianData.AssignedHeroes)
+                    {
+                        if (hero.Id == guardianSlot.FirstHero || hero.Id == guardianSlot.SecondHero)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
         }
 
         private void OnColumnClicked(object sender, ColumnClickEventArgs e)

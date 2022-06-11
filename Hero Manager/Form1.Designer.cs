@@ -39,9 +39,11 @@
             this.chRequiredBooks = new System.Windows.Forms.ColumnHeader();
             this.chInVault = new System.Windows.Forms.ColumnHeader();
             this.chLocked = new System.Windows.Forms.ColumnHeader();
+            this.chFactionGuardian = new System.Windows.Forms.ColumnHeader();
             this.chGearCount = new System.Windows.Forms.ColumnHeader();
             this.cbMultiples = new System.Windows.Forms.CheckBox();
             this.cbEpicsOrBetter = new System.Windows.Forms.CheckBox();
+            this.cbIgnoreFactionGuardians = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -52,7 +54,7 @@
             this.reloadToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1339, 38);
+            this.menuStrip1.Size = new System.Drawing.Size(1503, 38);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -77,13 +79,14 @@
             this.chRequiredBooks,
             this.chInVault,
             this.chLocked,
+            this.chFactionGuardian,
             this.chGearCount});
             this.lvHeroes.FullRowSelect = true;
             this.lvHeroes.GridLines = true;
             this.lvHeroes.HideSelection = false;
             this.lvHeroes.Location = new System.Drawing.Point(12, 41);
             this.lvHeroes.Name = "lvHeroes";
-            this.lvHeroes.Size = new System.Drawing.Size(1037, 1372);
+            this.lvHeroes.Size = new System.Drawing.Size(1201, 1372);
             this.lvHeroes.TabIndex = 1;
             this.lvHeroes.UseCompatibleStateImageBehavior = false;
             this.lvHeroes.View = System.Windows.Forms.View.Details;
@@ -127,6 +130,11 @@
             this.chLocked.Text = "Locked?";
             this.chLocked.Width = 100;
             // 
+            // chFactionGuardian
+            // 
+            this.chFactionGuardian.Text = "Faction Guardian?";
+            this.chFactionGuardian.Width = 200;
+            // 
             // chGearCount
             // 
             this.chGearCount.Text = "Gear Count";
@@ -136,7 +144,7 @@
             // 
             this.cbMultiples.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbMultiples.AutoSize = true;
-            this.cbMultiples.Location = new System.Drawing.Point(1055, 79);
+            this.cbMultiples.Location = new System.Drawing.Point(1219, 79);
             this.cbMultiples.Name = "cbMultiples";
             this.cbMultiples.Size = new System.Drawing.Size(200, 34);
             this.cbMultiples.TabIndex = 2;
@@ -148,7 +156,7 @@
             // 
             this.cbEpicsOrBetter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbEpicsOrBetter.AutoSize = true;
-            this.cbEpicsOrBetter.Location = new System.Drawing.Point(1055, 119);
+            this.cbEpicsOrBetter.Location = new System.Drawing.Point(1219, 119);
             this.cbEpicsOrBetter.Name = "cbEpicsOrBetter";
             this.cbEpicsOrBetter.Size = new System.Drawing.Size(172, 34);
             this.cbEpicsOrBetter.TabIndex = 3;
@@ -156,11 +164,24 @@
             this.cbEpicsOrBetter.UseVisualStyleBackColor = true;
             this.cbEpicsOrBetter.CheckedChanged += new System.EventHandler(this.OnEpicsOrBetterChanged);
             // 
+            // cbIgnoreFactionGuardians
+            // 
+            this.cbIgnoreFactionGuardians.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbIgnoreFactionGuardians.AutoSize = true;
+            this.cbIgnoreFactionGuardians.Location = new System.Drawing.Point(1219, 159);
+            this.cbIgnoreFactionGuardians.Name = "cbIgnoreFactionGuardians";
+            this.cbIgnoreFactionGuardians.Size = new System.Drawing.Size(270, 34);
+            this.cbIgnoreFactionGuardians.TabIndex = 4;
+            this.cbIgnoreFactionGuardians.Text = "Ignore Faction Guardians";
+            this.cbIgnoreFactionGuardians.UseVisualStyleBackColor = true;
+            this.cbIgnoreFactionGuardians.CheckedChanged += new System.EventHandler(this.OnIgnoreFactionGuardians);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 30F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1339, 1425);
+            this.ClientSize = new System.Drawing.Size(1503, 1425);
+            this.Controls.Add(this.cbIgnoreFactionGuardians);
             this.Controls.Add(this.cbEpicsOrBetter);
             this.Controls.Add(this.cbMultiples);
             this.Controls.Add(this.lvHeroes);
@@ -191,5 +212,7 @@
         private System.Windows.Forms.ColumnHeader chBook;
         private System.Windows.Forms.CheckBox cbMultiples;
         private System.Windows.Forms.CheckBox cbEpicsOrBetter;
+        private System.Windows.Forms.ColumnHeader chFactionGuardian;
+        private System.Windows.Forms.CheckBox cbIgnoreFactionGuardians;
     }
 }

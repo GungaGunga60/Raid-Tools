@@ -9,9 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Raid.Client" Version="1.3.32" />
-    <PackageReference Include="Raid.Common" Version="1.3.32" />
-    <PackageReference Include="Raid.DataModel" Version="1.3.32" />
+    <PackageReference Include="Raid.Client" Version="1.10.0-alpha" />
+    <PackageReference Include="Raid.Common" Version="1.10.0-alpha" />
+    <PackageReference Include="Raid.DataModel" Version="1.7.7-alpha" />
   </ItemGroup>
 
 </Project>
