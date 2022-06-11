@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -129,7 +130,7 @@ namespace Hero_Manager
 
             foreach (var hero in heroes)
             {
-                // name, stars, level, food?, book?, books required, in vault?, locked?, faction guardian?, gear count
+                // name, stars, level, food?, book?, books required, in vault?, locked?, faction, faction guardian?, gear count
                 ListViewItem item = new ListViewItem(hero.Name);
                 item.SubItems.Add(hero.Rank.Substring(5));
                 item.SubItems.Add(hero.Level.ToString());
@@ -138,6 +139,7 @@ namespace Hero_Manager
                 item.SubItems.Add(CountBooksRequired(hero, this.skillData).ToString());
                 item.SubItems.Add(hero.InVault ? "X" : String.Empty);
                 item.SubItems.Add(hero.Locked ? "X" : String.Empty);
+                item.SubItems.Add(hero.Type.Faction.ToString());
                 item.SubItems.Add(!cbIgnoreFactionGuardians.Checked && IsFactionGuardian(hero, academy) ? "X" : String.Empty);
                 item.SubItems.Add(hero.EquippedArtifactIds.Count.ToString());
                 
@@ -183,6 +185,37 @@ namespace Hero_Manager
         private void OnColumnClicked(object sender, ColumnClickEventArgs e)
         {
             this.lvHeroes.ListViewItemSorter = HeroSorter.Get(e.Column, this.lvHeroes.ListViewItemSorter as HeroSorter);
+        }
+
+        private void OnExportAsCsv(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "csv files (*.csv)|*.csv";
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                List<string> values = new List<string>();
+                using (StreamWriter file = new StreamWriter(sfd.OpenFile()))
+                {
+                    values.Clear();
+                    foreach (var col in this.lvHeroes.Columns)
+                    {
+                        values.Add(((ColumnHeader)col).Text);
+                    }
+                    file.WriteLine(string.Join(',', values));
+
+                    foreach (var item in this.lvHeroes.Items)
+                    {
+                        values.Clear();
+                        foreach (var subitem in ((ListViewItem)item).SubItems)
+                        {
+                            values.Add(((ListViewItem.ListViewSubItem)subitem).Text);
+                        }
+                        file.WriteLine(string.Join(',', values));
+                    }
+
+                    file.Flush();
+                }
+            }
         }
 
         #region Sorter
