@@ -2,16 +2,14 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <RootNamespace>Hero_Manager</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Raid.Client" Version="1.10.0-alpha" />
-    <PackageReference Include="Raid.Common" Version="1.10.0-alpha" />
-    <PackageReference Include="Raid.DataModel" Version="1.7.7-alpha" />
+    <PackageReference Include="Raid.Client" Version="2.4.8-alpha" />
   </ItemGroup>
 
 </Project>

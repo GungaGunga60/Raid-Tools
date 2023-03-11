@@ -39,24 +39,56 @@ namespace Hero_Manager
             { 
                 this.heroData = await this.api.StaticDataApi.GetHeroData();
             }
+
+            /*
+            OutputForm of = new OutputForm("All Heroes");
+            List<string> heroNames = new List<string>();
+            foreach (var hero in this.heroData.HeroTypes.Values)
+            {
+                heroNames.Add(hero.Name.DefaultValue);
+            }
+            heroNames.Sort();
+            foreach (string heroName in heroNames)
+            {
+                of.AddLine(heroName);
+            }
+            of.Show();
+
+            OutputForm of2 = new OutputForm("All Skills");
+            List<string> skillNames = new List<string>();
+            foreach (var skill in this.skillData.SkillTypes.Values)
+            {
+                skillNames.Add(skill.Name.DefaultValue);
+            }
+            skillNames.Sort();
+            foreach (string skillName in skillNames)
+            {
+                of2.AddLine(skillName);
+            }
+            of2.Show();
+
+            OutputForm of = new OutputForm("Unknown Faction Heroes");
+            foreach (var demonLord in this.heroData.HeroTypes.Values.Where(h => h.Faction == HeroFraction.Unknown))
+            {
+                of.AddLine("Name: " + demonLord.Name.DefaultValue);
+                of.AddLine("Affinity: " + demonLord.Affinity);
+                of.AddLine("Ascended: " + demonLord.Ascended);
+                of.AddLine("Avatar Key: " + demonLord.AvatarKey);
+                of.AddLine("Brain: " + demonLord.Brain);
+                of.AddLine("Faction: " + demonLord.Faction);
+                of.AddLine("Leader Skill: " + demonLord.LeaderSkill);
+                of.AddLine("Rarity: " + demonLord.Rarity);
+                of.AddLine("Role: " + demonLord.Role);
+                of.AddLine("Skill Type Ids: " + String.Join(',', demonLord.SkillTypeIds));
+                of.AddLine("Type Id: " + demonLord.TypeId);
+                of.AddLine("Unscaled Stats: " + demonLord.UnscaledStats);
+                of.AddLine(String.Empty);
+            }
+            of.Show();
+            */
         }
 
         private async void OnReloadHeroes(object sender, EventArgs e)
-        {
-            await ReloadHeroes();
-        }
-
-        private async void OnFilterToMultiplesChanged(object sender, EventArgs e)
-        {
-            await ReloadHeroes();
-        }
-
-        private async void OnEpicsOrBetterChanged(object sender, EventArgs e)
-        {
-            await ReloadHeroes();
-        }
-
-        private async void OnIgnoreFactionGuardians(object sender, EventArgs e)
         {
             await ReloadHeroes();
         }
@@ -81,17 +113,7 @@ namespace Hero_Manager
 
             if (this.cbMultiples.Checked)
             {
-                Dictionary<string, List<Hero>> heroesByName = new Dictionary<string, List<Hero>>();
-                foreach (var hero in heroes)
-                {
-                    List<Hero> hs = null;
-                    if (!heroesByName.TryGetValue(hero.Name.ToLowerInvariant(), out hs))
-                    {
-                        hs = new List<Hero>();
-                        heroesByName[hero.Name.ToLowerInvariant()] = hs;
-                    }
-                    hs.Add(hero);
-                }
+                Dictionary<string, List<Hero>> heroesByName = BucketByName(heroes);
 
                 heroes.Clear();
                 foreach (List<Hero> hs in heroesByName.Values)
@@ -116,36 +138,109 @@ namespace Hero_Manager
                 }
             }
 
-            if (this.cbIgnoreFactionGuardians.Checked)
+            if (this.cbIgnoreFoodAndBooks.Checked)
             {
                 for (int i = heroes.Count - 1; i >= 0; i--)
                 {
                     var hero = heroes[i];
-                    if (IsFactionGuardian(hero, academy))
+                    if (HeroIsFood(hero) || HeroIsBook(hero))
                     {
                         heroes.RemoveAt(i);
                     }
                 }
             }
 
+            if (this.cbIgnoreFactionGuardians.Checked)
+            {
+                Dictionary<string, List<Hero>> factionGuardians = new Dictionary<string, List<Hero>>();
+                for (int i = heroes.Count - 1; i >= 0; i--)
+                {
+                    var hero = heroes[i];
+                    if (IsFactionGuardian(hero, academy))
+                    {
+                        heroes.RemoveAt(i);
+                        List<Hero> fgs;
+                        if (!factionGuardians.TryGetValue(hero.Name.ToLowerInvariant(), out fgs))
+                        {
+                            fgs = new List<Hero>();
+                            factionGuardians[hero.Name.ToLowerInvariant()] = fgs;
+                        }
+                        fgs.Add(hero);
+                    }
+                }
+
+                // Add back the ones where they're not *ALL* faction guardians.
+                Dictionary<string, List<Hero>> heroesByName = BucketByName(heroes);
+                foreach (string name in heroesByName.Keys)
+                {
+                    List<Hero> fgs;
+                    if (factionGuardians.TryGetValue(name, out fgs))
+                    {
+                        heroes.AddRange(fgs);
+                    }
+                }
+            }
+
+            if (this.cbMultiples.Checked)
+            {
+                Dictionary<string, List<Hero>> heroesByName = BucketByName(heroes);
+
+                heroes.Clear();
+                foreach (List<Hero> hs in heroesByName.Values)
+                {
+                    if (hs.Count > 1)
+                    {
+                        heroes.AddRange(hs);
+                    }
+                }
+            }
+
             foreach (var hero in heroes)
             {
-                // name, stars, level, food?, book?, books required, in vault?, locked?, faction, faction guardian?, gear count
+                // name, stars, level, food?, book?, books required, in master vault?, in reserve vault?, locked?, faction, faction guardian?, gear count
                 ListViewItem item = new ListViewItem(hero.Name);
                 item.SubItems.Add(hero.Rank.Substring(5));
                 item.SubItems.Add(hero.Level.ToString());
-                item.SubItems.Add(hero.Marker == "Speed" ? "X" : String.Empty);
-                item.SubItems.Add(hero.Marker == "Support" ? "X" : String.Empty);
+                item.SubItems.Add(HeroIsFood(hero) ? "X" : String.Empty);
+                item.SubItems.Add(HeroIsBook(hero) ? "X" : String.Empty);
                 item.SubItems.Add(CountBooksRequired(hero, this.skillData).ToString());
                 item.SubItems.Add(hero.InVault ? "X" : String.Empty);
+                item.SubItems.Add(hero.InDeepVault ? "X" : String.Empty);
                 item.SubItems.Add(hero.Locked ? "X" : String.Empty);
                 item.SubItems.Add(hero.Type.Faction.ToString());
-                item.SubItems.Add(!cbIgnoreFactionGuardians.Checked && IsFactionGuardian(hero, academy) ? "X" : String.Empty);
+                item.SubItems.Add(IsFactionGuardian(hero, academy) ? "X" : String.Empty);
                 item.SubItems.Add(hero.EquippedArtifactIds.Count.ToString());
                 
                 this.lvHeroes.Items.Add(item);
             }
             this.Text = string.Format("{0}'s Heroes", accounts.First().Name);
+        }
+
+        private static bool HeroIsFood(Hero hero)
+        {
+            return hero.Marker == "Speed";
+        }
+
+        private static bool HeroIsBook(Hero hero)
+        {
+            return hero.Marker == "Support";
+        }
+
+        private static Dictionary<string, List<Hero>> BucketByName(IEnumerable<Hero> heroes)
+        {
+            Dictionary<string, List<Hero>> heroesByName = new Dictionary<string, List<Hero>>();
+            foreach (var hero in heroes)
+            {
+                List<Hero> hs = null;
+                if (!heroesByName.TryGetValue(hero.Name.ToLowerInvariant(), out hs))
+                {
+                    hs = new List<Hero>();
+                    heroesByName[hero.Name.ToLowerInvariant()] = hs;
+                }
+                hs.Add(hero);
+            }
+
+            return heroesByName;
         }
 
         private static int CountBooksRequired(Hero hero, StaticSkillData skillData)
@@ -164,10 +259,10 @@ namespace Hero_Manager
         private static bool IsFactionGuardian(Hero hero, AcademyData academy)
         {
             Dictionary<HeroRarity, GuardianData> factionData = null;
-            if (academy.Guardians.TryGetValue(hero.Type.Faction, out factionData))
+            if (academy.Guardians.TryGetValue(hero.Type.Faction.Value, out factionData))
             {
                 GuardianData guardianData = null;
-                if (factionData.TryGetValue(hero.Type.Rarity, out guardianData))
+                if (factionData.TryGetValue(hero.Type.Rarity.Value, out guardianData))
                 {
                     foreach (var guardianSlot in guardianData.AssignedHeroes)
                     {
@@ -259,5 +354,15 @@ namespace Hero_Manager
             }
         }
         #endregion
+
+        private async void OnLaunchFactionGuardianFinder(object sender, EventArgs e)
+        {
+            var accounts = await api.AccountApi.GetAccounts();
+            var accountId = accounts.First().Id;
+            var academy = await api.AccountApi.GetAcademy(accountId);
+            List<Hero> heroes = new List<Hero>(await api.AccountApi.GetHeroes(accountId));
+
+            new FactionGuardianFinder(heroes, academy).Show();
+        }
     }
 }
