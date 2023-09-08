@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Raid.Client" Version="2.4.8-alpha" />
+    <PackageReference Include="Raid.Client" Version="2.6.13" />
   </ItemGroup>
 
 </Project>

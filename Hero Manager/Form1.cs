@@ -1,4 +1,6 @@
-﻿using Raid.Client;
+﻿using Hero_Manager.Data_Model;
+using Newtonsoft.Json;
+using Raid.Client;
 using Raid.Toolkit.DataModel;
 using Raid.Toolkit.DataModel.Enums;
 using System;
@@ -18,8 +20,13 @@ namespace Hero_Manager
     public partial class Form1 : Form
     {
         private RaidToolkitClient api;
+        private Data_Model.HMStaticData staticData;
         private StaticSkillData skillData;
         private StaticHeroTypeData heroData;
+        private StaticArtifactData artifactData;
+        private StaticArenaData arenaData;
+        private StaticStageData stageData;
+        private IReadOnlyDictionary<string, string> localizedStrings;
 
         public Form1()
         {
@@ -30,14 +37,39 @@ namespace Hero_Manager
 
         private async Task EnsureStaticData()
         {
-            if (this.skillData == null)
+            if (this.staticData == null)
             {
-                this.skillData = await this.api.StaticDataApi.GetSkillData();
+                this.staticData = await Data_Model.HMStaticData.Get(this.api.StaticDataApi);
+            }
+
+            if (this.arenaData == null)
+            {
+                this.arenaData = await this.api.StaticDataApi.GetArenaData();
+            }
+
+            if (this.artifactData == null)
+            {
+                this.artifactData = await this.api.StaticDataApi.GetArtifactData();
             }
 
             if (this.heroData == null)
-            { 
+            {
                 this.heroData = await this.api.StaticDataApi.GetHeroData();
+            }
+
+            if (this.localizedStrings == null)
+            {
+                this.localizedStrings = await this.api.StaticDataApi.GetLocalizedStrings();
+            }
+
+            if (this.stageData == null)
+            {
+                this.stageData = await this.api.StaticDataApi.GetStageData();
+            }
+
+            if (this.skillData == null)
+            {
+                this.skillData = await this.api.StaticDataApi.GetSkillData();
             }
 
             /*
@@ -102,7 +134,7 @@ namespace Hero_Manager
             await this.EnsureStaticData();
             var academy = await api.AccountApi.GetAcademy(accountId);
             List<Hero> heroes = new List<Hero>(await api.AccountApi.GetHeroes(accountId));
-            
+
             for (int i = heroes.Count - 1; i >= 0; i--)
             {
                 if (heroes[i].Deleted)
@@ -210,7 +242,7 @@ namespace Hero_Manager
                 item.SubItems.Add(hero.Type.Faction.ToString());
                 item.SubItems.Add(IsFactionGuardian(hero, academy) ? "X" : String.Empty);
                 item.SubItems.Add(hero.EquippedArtifactIds.Count.ToString());
-                
+
                 this.lvHeroes.Items.Add(item);
             }
             this.Text = string.Format("{0}'s Heroes", accounts.First().Name);
@@ -363,6 +395,27 @@ namespace Hero_Manager
             List<Hero> heroes = new List<Hero>(await api.AccountApi.GetHeroes(accountId));
 
             new FactionGuardianFinder(heroes, academy).Show();
+        }
+
+        private async void OnLaunchSkillExplorer(object sender, EventArgs e)
+        {
+            await this.EnsureStaticData();
+            new SkillExplorer(this.staticData).Show();
+        }
+
+        private async void OnExportStaticData(object sender, EventArgs e)
+        {
+            await this.EnsureStaticData();
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "json files (*.json)|*.json";
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                using (StreamWriter file = new StreamWriter(sfd.OpenFile()))
+                {
+                    this.staticData.SerializeToStream(file);
+                    file.Flush();
+                }
+            }
         }
     }
 }

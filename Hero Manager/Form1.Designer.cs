@@ -28,222 +28,227 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.reloadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.factionGuardianFinderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.lvHeroes = new System.Windows.Forms.ListView();
-            this.chName = new System.Windows.Forms.ColumnHeader();
-            this.chStars = new System.Windows.Forms.ColumnHeader();
-            this.chLevel = new System.Windows.Forms.ColumnHeader();
-            this.chFood = new System.Windows.Forms.ColumnHeader();
-            this.chBook = new System.Windows.Forms.ColumnHeader();
-            this.chRequiredBooks = new System.Windows.Forms.ColumnHeader();
-            this.chInMasterVault = new System.Windows.Forms.ColumnHeader();
-            this.chInReserveVault = new System.Windows.Forms.ColumnHeader();
-            this.chLocked = new System.Windows.Forms.ColumnHeader();
-            this.chFaction = new System.Windows.Forms.ColumnHeader();
-            this.chFactionGuardian = new System.Windows.Forms.ColumnHeader();
-            this.chGearCount = new System.Windows.Forms.ColumnHeader();
-            this.cbMultiples = new System.Windows.Forms.CheckBox();
-            this.cbEpicsOrBetter = new System.Windows.Forms.CheckBox();
-            this.cbIgnoreFactionGuardians = new System.Windows.Forms.CheckBox();
-            this.cbIgnoreFoodAndBooks = new System.Windows.Forms.CheckBox();
-            this.menuStrip1.SuspendLayout();
-            this.SuspendLayout();
+            menuStrip1 = new System.Windows.Forms.MenuStrip();
+            reloadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            factionGuardianFinderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            skillExplorerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            lvHeroes = new System.Windows.Forms.ListView();
+            chName = new System.Windows.Forms.ColumnHeader();
+            chStars = new System.Windows.Forms.ColumnHeader();
+            chLevel = new System.Windows.Forms.ColumnHeader();
+            chFood = new System.Windows.Forms.ColumnHeader();
+            chBook = new System.Windows.Forms.ColumnHeader();
+            chRequiredBooks = new System.Windows.Forms.ColumnHeader();
+            chInMasterVault = new System.Windows.Forms.ColumnHeader();
+            chInReserveVault = new System.Windows.Forms.ColumnHeader();
+            chLocked = new System.Windows.Forms.ColumnHeader();
+            chFaction = new System.Windows.Forms.ColumnHeader();
+            chFactionGuardian = new System.Windows.Forms.ColumnHeader();
+            chGearCount = new System.Windows.Forms.ColumnHeader();
+            cbMultiples = new System.Windows.Forms.CheckBox();
+            cbEpicsOrBetter = new System.Windows.Forms.CheckBox();
+            cbIgnoreFactionGuardians = new System.Windows.Forms.CheckBox();
+            cbIgnoreFoodAndBooks = new System.Windows.Forms.CheckBox();
+            heroesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            staticDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            menuStrip1.SuspendLayout();
+            SuspendLayout();
             // 
             // menuStrip1
             // 
-            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(28, 28);
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.reloadToolStripMenuItem,
-            this.exportToolStripMenuItem,
-            this.toolsToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1934, 38);
-            this.menuStrip1.TabIndex = 0;
-            this.menuStrip1.Text = "menuStrip1";
+            menuStrip1.ImageScalingSize = new System.Drawing.Size(28, 28);
+            menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { reloadToolStripMenuItem, exportToolStripMenuItem, toolsToolStripMenuItem });
+            menuStrip1.Location = new System.Drawing.Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new System.Drawing.Size(1934, 38);
+            menuStrip1.TabIndex = 0;
+            menuStrip1.Text = "menuStrip1";
             // 
             // reloadToolStripMenuItem
             // 
-            this.reloadToolStripMenuItem.Name = "reloadToolStripMenuItem";
-            this.reloadToolStripMenuItem.Size = new System.Drawing.Size(94, 34);
-            this.reloadToolStripMenuItem.Text = "Reload";
-            this.reloadToolStripMenuItem.Click += new System.EventHandler(this.OnReloadHeroes);
+            reloadToolStripMenuItem.Name = "reloadToolStripMenuItem";
+            reloadToolStripMenuItem.Size = new System.Drawing.Size(94, 34);
+            reloadToolStripMenuItem.Text = "Reload";
+            reloadToolStripMenuItem.Click += OnReloadHeroes;
             // 
             // exportToolStripMenuItem
             // 
-            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            this.exportToolStripMenuItem.Size = new System.Drawing.Size(105, 34);
-            this.exportToolStripMenuItem.Text = "Export...";
-            this.exportToolStripMenuItem.Click += new System.EventHandler(this.OnExportAsCsv);
+            exportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { heroesToolStripMenuItem, staticDataToolStripMenuItem });
+            exportToolStripMenuItem.Name = "exportToolStripMenuItem";
+            exportToolStripMenuItem.Size = new System.Drawing.Size(90, 34);
+            exportToolStripMenuItem.Text = "Export";
             // 
             // toolsToolStripMenuItem
             // 
-            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.factionGuardianFinderToolStripMenuItem});
-            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(78, 34);
-            this.toolsToolStripMenuItem.Text = "Tools";
+            toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { factionGuardianFinderToolStripMenuItem, skillExplorerToolStripMenuItem });
+            toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            toolsToolStripMenuItem.Size = new System.Drawing.Size(78, 34);
+            toolsToolStripMenuItem.Text = "Tools";
             // 
             // factionGuardianFinderToolStripMenuItem
             // 
-            this.factionGuardianFinderToolStripMenuItem.Name = "factionGuardianFinderToolStripMenuItem";
-            this.factionGuardianFinderToolStripMenuItem.Size = new System.Drawing.Size(350, 40);
-            this.factionGuardianFinderToolStripMenuItem.Text = "Faction Guardian Finder";
-            this.factionGuardianFinderToolStripMenuItem.Click += new System.EventHandler(this.OnLaunchFactionGuardianFinder);
+            factionGuardianFinderToolStripMenuItem.Name = "factionGuardianFinderToolStripMenuItem";
+            factionGuardianFinderToolStripMenuItem.Size = new System.Drawing.Size(350, 40);
+            factionGuardianFinderToolStripMenuItem.Text = "Faction Guardian Finder";
+            factionGuardianFinderToolStripMenuItem.Click += OnLaunchFactionGuardianFinder;
+            // 
+            // skillExplorerToolStripMenuItem
+            // 
+            skillExplorerToolStripMenuItem.Name = "skillExplorerToolStripMenuItem";
+            skillExplorerToolStripMenuItem.Size = new System.Drawing.Size(350, 40);
+            skillExplorerToolStripMenuItem.Text = "Skill Explorer";
+            skillExplorerToolStripMenuItem.Click += OnLaunchSkillExplorer;
             // 
             // lvHeroes
             // 
-            this.lvHeroes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lvHeroes.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.chName,
-            this.chStars,
-            this.chLevel,
-            this.chFood,
-            this.chBook,
-            this.chRequiredBooks,
-            this.chInMasterVault,
-            this.chInReserveVault,
-            this.chLocked,
-            this.chFaction,
-            this.chFactionGuardian,
-            this.chGearCount});
-            this.lvHeroes.FullRowSelect = true;
-            this.lvHeroes.GridLines = true;
-            this.lvHeroes.Location = new System.Drawing.Point(12, 41);
-            this.lvHeroes.Name = "lvHeroes";
-            this.lvHeroes.Size = new System.Drawing.Size(1632, 1372);
-            this.lvHeroes.TabIndex = 1;
-            this.lvHeroes.UseCompatibleStateImageBehavior = false;
-            this.lvHeroes.View = System.Windows.Forms.View.Details;
-            this.lvHeroes.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.OnColumnClicked);
+            lvHeroes.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            lvHeroes.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { chName, chStars, chLevel, chFood, chBook, chRequiredBooks, chInMasterVault, chInReserveVault, chLocked, chFaction, chFactionGuardian, chGearCount });
+            lvHeroes.FullRowSelect = true;
+            lvHeroes.GridLines = true;
+            lvHeroes.Location = new System.Drawing.Point(12, 41);
+            lvHeroes.Name = "lvHeroes";
+            lvHeroes.Size = new System.Drawing.Size(1632, 1372);
+            lvHeroes.TabIndex = 1;
+            lvHeroes.UseCompatibleStateImageBehavior = false;
+            lvHeroes.View = System.Windows.Forms.View.Details;
+            lvHeroes.ColumnClick += OnColumnClicked;
             // 
             // chName
             // 
-            this.chName.Text = "Name";
-            this.chName.Width = 200;
+            chName.Text = "Name";
+            chName.Width = 200;
             // 
             // chStars
             // 
-            this.chStars.Text = "Stars";
+            chStars.Text = "Stars";
             // 
             // chLevel
             // 
-            this.chLevel.Text = "Level";
+            chLevel.Text = "Level";
             // 
             // chFood
             // 
-            this.chFood.Text = "Food?";
-            this.chFood.Width = 75;
+            chFood.Text = "Food?";
+            chFood.Width = 75;
             // 
             // chBook
             // 
-            this.chBook.Text = "Book?";
-            this.chBook.Width = 75;
+            chBook.Text = "Book?";
+            chBook.Width = 75;
             // 
             // chRequiredBooks
             // 
-            this.chRequiredBooks.Text = "Books Required";
-            this.chRequiredBooks.Width = 175;
+            chRequiredBooks.Text = "Books Required";
+            chRequiredBooks.Width = 175;
             // 
             // chInMasterVault
             // 
-            this.chInMasterVault.Text = "In Master Vault?";
-            this.chInMasterVault.Width = 180;
+            chInMasterVault.Text = "In Master Vault?";
+            chInMasterVault.Width = 180;
             // 
             // chInReserveVault
             // 
-            this.chInReserveVault.Text = "In Reserve Vault?";
-            this.chInReserveVault.Width = 180;
+            chInReserveVault.Text = "In Reserve Vault?";
+            chInReserveVault.Width = 180;
             // 
             // chLocked
             // 
-            this.chLocked.Text = "Locked?";
-            this.chLocked.Width = 100;
+            chLocked.Text = "Locked?";
+            chLocked.Width = 100;
             // 
             // chFaction
             // 
-            this.chFaction.Text = "Faction";
-            this.chFaction.Width = 150;
+            chFaction.Text = "Faction";
+            chFaction.Width = 150;
             // 
             // chFactionGuardian
             // 
-            this.chFactionGuardian.Text = "Faction Guardian?";
-            this.chFactionGuardian.Width = 200;
+            chFactionGuardian.Text = "Faction Guardian?";
+            chFactionGuardian.Width = 200;
             // 
             // chGearCount
             // 
-            this.chGearCount.Text = "Gear Count";
-            this.chGearCount.Width = 125;
+            chGearCount.Text = "Gear Count";
+            chGearCount.Width = 125;
             // 
             // cbMultiples
             // 
-            this.cbMultiples.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbMultiples.AutoSize = true;
-            this.cbMultiples.Location = new System.Drawing.Point(1650, 79);
-            this.cbMultiples.Name = "cbMultiples";
-            this.cbMultiples.Size = new System.Drawing.Size(200, 34);
-            this.cbMultiples.TabIndex = 2;
-            this.cbMultiples.Text = "Filter to Multiples";
-            this.cbMultiples.UseVisualStyleBackColor = true;
+            cbMultiples.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            cbMultiples.AutoSize = true;
+            cbMultiples.Location = new System.Drawing.Point(1650, 79);
+            cbMultiples.Name = "cbMultiples";
+            cbMultiples.Size = new System.Drawing.Size(200, 34);
+            cbMultiples.TabIndex = 2;
+            cbMultiples.Text = "Filter to Multiples";
+            cbMultiples.UseVisualStyleBackColor = true;
             // 
             // cbEpicsOrBetter
             // 
-            this.cbEpicsOrBetter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbEpicsOrBetter.AutoSize = true;
-            this.cbEpicsOrBetter.Location = new System.Drawing.Point(1650, 119);
-            this.cbEpicsOrBetter.Name = "cbEpicsOrBetter";
-            this.cbEpicsOrBetter.Size = new System.Drawing.Size(172, 34);
-            this.cbEpicsOrBetter.TabIndex = 3;
-            this.cbEpicsOrBetter.Text = "Epics or Better";
-            this.cbEpicsOrBetter.UseVisualStyleBackColor = true;
+            cbEpicsOrBetter.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            cbEpicsOrBetter.AutoSize = true;
+            cbEpicsOrBetter.Location = new System.Drawing.Point(1650, 119);
+            cbEpicsOrBetter.Name = "cbEpicsOrBetter";
+            cbEpicsOrBetter.Size = new System.Drawing.Size(172, 34);
+            cbEpicsOrBetter.TabIndex = 3;
+            cbEpicsOrBetter.Text = "Epics or Better";
+            cbEpicsOrBetter.UseVisualStyleBackColor = true;
             // 
             // cbIgnoreFactionGuardians
             // 
-            this.cbIgnoreFactionGuardians.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbIgnoreFactionGuardians.AutoSize = true;
-            this.cbIgnoreFactionGuardians.Location = new System.Drawing.Point(1650, 159);
-            this.cbIgnoreFactionGuardians.Name = "cbIgnoreFactionGuardians";
-            this.cbIgnoreFactionGuardians.Size = new System.Drawing.Size(270, 34);
-            this.cbIgnoreFactionGuardians.TabIndex = 4;
-            this.cbIgnoreFactionGuardians.Text = "Ignore Faction Guardians";
-            this.cbIgnoreFactionGuardians.UseVisualStyleBackColor = true;
+            cbIgnoreFactionGuardians.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            cbIgnoreFactionGuardians.AutoSize = true;
+            cbIgnoreFactionGuardians.Location = new System.Drawing.Point(1650, 159);
+            cbIgnoreFactionGuardians.Name = "cbIgnoreFactionGuardians";
+            cbIgnoreFactionGuardians.Size = new System.Drawing.Size(270, 34);
+            cbIgnoreFactionGuardians.TabIndex = 4;
+            cbIgnoreFactionGuardians.Text = "Ignore Faction Guardians";
+            cbIgnoreFactionGuardians.UseVisualStyleBackColor = true;
             // 
             // cbIgnoreFoodAndBooks
             // 
-            this.cbIgnoreFoodAndBooks.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbIgnoreFoodAndBooks.AutoSize = true;
-            this.cbIgnoreFoodAndBooks.Location = new System.Drawing.Point(1650, 199);
-            this.cbIgnoreFoodAndBooks.Name = "cbIgnoreFoodAndBooks";
-            this.cbIgnoreFoodAndBooks.Size = new System.Drawing.Size(253, 34);
-            this.cbIgnoreFoodAndBooks.TabIndex = 5;
-            this.cbIgnoreFoodAndBooks.Text = "Ignore Food and Books";
-            this.cbIgnoreFoodAndBooks.UseVisualStyleBackColor = true;
+            cbIgnoreFoodAndBooks.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            cbIgnoreFoodAndBooks.AutoSize = true;
+            cbIgnoreFoodAndBooks.Location = new System.Drawing.Point(1650, 199);
+            cbIgnoreFoodAndBooks.Name = "cbIgnoreFoodAndBooks";
+            cbIgnoreFoodAndBooks.Size = new System.Drawing.Size(253, 34);
+            cbIgnoreFoodAndBooks.TabIndex = 5;
+            cbIgnoreFoodAndBooks.Text = "Ignore Food and Books";
+            cbIgnoreFoodAndBooks.UseVisualStyleBackColor = true;
+            // 
+            // heroesToolStripMenuItem
+            // 
+            heroesToolStripMenuItem.Name = "heroesToolStripMenuItem";
+            heroesToolStripMenuItem.Size = new System.Drawing.Size(315, 40);
+            heroesToolStripMenuItem.Text = "Heroes...";
+            heroesToolStripMenuItem.Click += OnExportAsCsv;
+            // 
+            // staticDataToolStripMenuItem
+            // 
+            staticDataToolStripMenuItem.Name = "staticDataToolStripMenuItem";
+            staticDataToolStripMenuItem.Size = new System.Drawing.Size(315, 40);
+            staticDataToolStripMenuItem.Text = "Static Data...";
+            staticDataToolStripMenuItem.Click += OnExportStaticData;
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 30F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1934, 1425);
-            this.Controls.Add(this.cbIgnoreFoodAndBooks);
-            this.Controls.Add(this.cbIgnoreFactionGuardians);
-            this.Controls.Add(this.cbEpicsOrBetter);
-            this.Controls.Add(this.cbMultiples);
-            this.Controls.Add(this.lvHeroes);
-            this.Controls.Add(this.menuStrip1);
-            this.MainMenuStrip = this.menuStrip1;
-            this.Name = "Form1";
-            this.Text = "Hero Manager";
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new System.Drawing.SizeF(12F, 30F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(1934, 1425);
+            Controls.Add(cbIgnoreFoodAndBooks);
+            Controls.Add(cbIgnoreFactionGuardians);
+            Controls.Add(cbEpicsOrBetter);
+            Controls.Add(cbMultiples);
+            Controls.Add(lvHeroes);
+            Controls.Add(menuStrip1);
+            MainMenuStrip = menuStrip1;
+            Name = "Form1";
+            Text = "Hero Manager";
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -270,5 +275,8 @@
         private System.Windows.Forms.ToolStripMenuItem factionGuardianFinderToolStripMenuItem;
         private System.Windows.Forms.ColumnHeader chInReserveVault;
         private System.Windows.Forms.CheckBox cbIgnoreFoodAndBooks;
+        private System.Windows.Forms.ToolStripMenuItem skillExplorerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem heroesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem staticDataToolStripMenuItem;
     }
 }
