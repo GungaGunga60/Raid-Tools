@@ -19,105 +19,34 @@ namespace Hero_Manager
 {
     public partial class Form1 : Form
     {
-        private RaidToolkitClient api;
-        private Data_Model.HMStaticData staticData;
-        private StaticSkillData skillData;
-        private StaticHeroTypeData heroData;
-        private StaticArtifactData artifactData;
-        private StaticArenaData arenaData;
-        private StaticStageData stageData;
-        private IReadOnlyDictionary<string, string> localizedStrings;
+        private RaidToolkitClient api = null;
+        private HMStaticData staticData = null;
 
         public Form1()
         {
             InitializeComponent();
-            this.api = new RaidToolkitClient();
-            this.api.Connect();
+        }
+
+        private RaidToolkitClient Api
+        {
+            get
+            {
+                if (this.api == null)
+                {
+                    this.api = new RaidToolkitClient();
+                    this.api.Connect();
+                }
+
+                return this.api;
+            }
         }
 
         private async Task EnsureStaticData()
         {
             if (this.staticData == null)
             {
-                this.staticData = await Data_Model.HMStaticData.Get(this.api.StaticDataApi);
+                this.staticData = await HMStaticData.Get(this.Api.StaticDataApi);
             }
-
-            if (this.arenaData == null)
-            {
-                this.arenaData = await this.api.StaticDataApi.GetArenaData();
-            }
-
-            if (this.artifactData == null)
-            {
-                this.artifactData = await this.api.StaticDataApi.GetArtifactData();
-            }
-
-            if (this.heroData == null)
-            {
-                this.heroData = await this.api.StaticDataApi.GetHeroData();
-            }
-
-            if (this.localizedStrings == null)
-            {
-                this.localizedStrings = await this.api.StaticDataApi.GetLocalizedStrings();
-            }
-
-            if (this.stageData == null)
-            {
-                this.stageData = await this.api.StaticDataApi.GetStageData();
-            }
-
-            if (this.skillData == null)
-            {
-                this.skillData = await this.api.StaticDataApi.GetSkillData();
-            }
-
-            /*
-            OutputForm of = new OutputForm("All Heroes");
-            List<string> heroNames = new List<string>();
-            foreach (var hero in this.heroData.HeroTypes.Values)
-            {
-                heroNames.Add(hero.Name.DefaultValue);
-            }
-            heroNames.Sort();
-            foreach (string heroName in heroNames)
-            {
-                of.AddLine(heroName);
-            }
-            of.Show();
-
-            OutputForm of2 = new OutputForm("All Skills");
-            List<string> skillNames = new List<string>();
-            foreach (var skill in this.skillData.SkillTypes.Values)
-            {
-                skillNames.Add(skill.Name.DefaultValue);
-            }
-            skillNames.Sort();
-            foreach (string skillName in skillNames)
-            {
-                of2.AddLine(skillName);
-            }
-            of2.Show();
-
-            OutputForm of = new OutputForm("Unknown Faction Heroes");
-            foreach (var demonLord in this.heroData.HeroTypes.Values.Where(h => h.Faction == HeroFraction.Unknown))
-            {
-                of.AddLine("Name: " + demonLord.Name.DefaultValue);
-                of.AddLine("Affinity: " + demonLord.Affinity);
-                of.AddLine("Ascended: " + demonLord.Ascended);
-                of.AddLine("Avatar Key: " + demonLord.AvatarKey);
-                of.AddLine("Brain: " + demonLord.Brain);
-                of.AddLine("Faction: " + demonLord.Faction);
-                of.AddLine("Leader Skill: " + demonLord.LeaderSkill);
-                of.AddLine("Rarity: " + demonLord.Rarity);
-                of.AddLine("Role: " + demonLord.Role);
-                of.AddLine("Skill Type Ids: " + String.Join(',', demonLord.SkillTypeIds));
-                of.AddLine("Type Id: " + demonLord.TypeId);
-                of.AddLine("Unscaled Stats: " + demonLord.UnscaledStats);
-                of.AddLine(String.Empty);
-            }
-            of.Show();
-            */
         }
 
         private async void OnReloadHeroes(object sender, EventArgs e)
@@ -162,7 +91,7 @@ namespace Hero_Manager
                 for (int i = heroes.Count - 1; i >= 0; i--)
                 {
                     var hero = heroes[i];
-                    var rarity = heroData.HeroTypes[hero.TypeId].Rarity;
+                    var rarity = this.staticData.HeroData.HeroTypes[hero.TypeId].Rarity;
                     if (rarity != HeroRarity.Epic && rarity != HeroRarity.Legendary)
                     {
                         heroes.RemoveAt(i);
@@ -235,7 +164,7 @@ namespace Hero_Manager
                 item.SubItems.Add(hero.Level.ToString());
                 item.SubItems.Add(HeroIsFood(hero) ? "X" : String.Empty);
                 item.SubItems.Add(HeroIsBook(hero) ? "X" : String.Empty);
-                item.SubItems.Add(CountBooksRequired(hero, this.skillData).ToString());
+                item.SubItems.Add(CountBooksRequired(hero, this.staticData.SkillData).ToString());
                 item.SubItems.Add(hero.InVault ? "X" : String.Empty);
                 item.SubItems.Add(hero.InDeepVault ? "X" : String.Empty);
                 item.SubItems.Add(hero.Locked ? "X" : String.Empty);
@@ -416,6 +345,21 @@ namespace Hero_Manager
                     file.Flush();
                 }
             }
+        }
+
+        private async void OnImportStaticData(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "json files (*.json)|*.json";
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                this.staticData = await HMStaticData.LoadFromStream(ofd.OpenFile());
+            }
+        }
+
+        private void exportToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

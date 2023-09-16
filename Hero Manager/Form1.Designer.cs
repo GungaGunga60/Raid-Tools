@@ -31,9 +31,13 @@
             menuStrip1 = new System.Windows.Forms.MenuStrip();
             reloadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            heroesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             factionGuardianFinderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             skillExplorerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            staticDataToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            exportToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             lvHeroes = new System.Windows.Forms.ListView();
             chName = new System.Windows.Forms.ColumnHeader();
             chStars = new System.Windows.Forms.ColumnHeader();
@@ -51,15 +55,13 @@
             cbEpicsOrBetter = new System.Windows.Forms.CheckBox();
             cbIgnoreFactionGuardians = new System.Windows.Forms.CheckBox();
             cbIgnoreFoodAndBooks = new System.Windows.Forms.CheckBox();
-            heroesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            staticDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip1
             // 
             menuStrip1.ImageScalingSize = new System.Drawing.Size(28, 28);
-            menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { reloadToolStripMenuItem, exportToolStripMenuItem, toolsToolStripMenuItem });
+            menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { reloadToolStripMenuItem, exportToolStripMenuItem, toolsToolStripMenuItem, staticDataToolStripMenuItem1 });
             menuStrip1.Location = new System.Drawing.Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new System.Drawing.Size(1934, 38);
@@ -75,10 +77,17 @@
             // 
             // exportToolStripMenuItem
             // 
-            exportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { heroesToolStripMenuItem, staticDataToolStripMenuItem });
+            exportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { heroesToolStripMenuItem });
             exportToolStripMenuItem.Name = "exportToolStripMenuItem";
             exportToolStripMenuItem.Size = new System.Drawing.Size(90, 34);
             exportToolStripMenuItem.Text = "Export";
+            // 
+            // heroesToolStripMenuItem
+            // 
+            heroesToolStripMenuItem.Name = "heroesToolStripMenuItem";
+            heroesToolStripMenuItem.Size = new System.Drawing.Size(315, 40);
+            heroesToolStripMenuItem.Text = "Heroes...";
+            heroesToolStripMenuItem.Click += OnExportAsCsv;
             // 
             // toolsToolStripMenuItem
             // 
@@ -100,6 +109,27 @@
             skillExplorerToolStripMenuItem.Size = new System.Drawing.Size(350, 40);
             skillExplorerToolStripMenuItem.Text = "Skill Explorer";
             skillExplorerToolStripMenuItem.Click += OnLaunchSkillExplorer;
+            // 
+            // staticDataToolStripMenuItem1
+            // 
+            staticDataToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { exportToolStripMenuItem1, importToolStripMenuItem });
+            staticDataToolStripMenuItem1.Name = "staticDataToolStripMenuItem1";
+            staticDataToolStripMenuItem1.Size = new System.Drawing.Size(131, 34);
+            staticDataToolStripMenuItem1.Text = "Static Data";
+            // 
+            // exportToolStripMenuItem1
+            // 
+            exportToolStripMenuItem1.Name = "exportToolStripMenuItem1";
+            exportToolStripMenuItem1.Size = new System.Drawing.Size(315, 40);
+            exportToolStripMenuItem1.Text = "Export...";
+            exportToolStripMenuItem1.Click += OnExportStaticData;
+            // 
+            // importToolStripMenuItem
+            // 
+            importToolStripMenuItem.Name = "importToolStripMenuItem";
+            importToolStripMenuItem.Size = new System.Drawing.Size(315, 40);
+            importToolStripMenuItem.Text = "Import...";
+            importToolStripMenuItem.Click += OnImportStaticData;
             // 
             // lvHeroes
             // 
@@ -217,20 +247,6 @@
             cbIgnoreFoodAndBooks.Text = "Ignore Food and Books";
             cbIgnoreFoodAndBooks.UseVisualStyleBackColor = true;
             // 
-            // heroesToolStripMenuItem
-            // 
-            heroesToolStripMenuItem.Name = "heroesToolStripMenuItem";
-            heroesToolStripMenuItem.Size = new System.Drawing.Size(315, 40);
-            heroesToolStripMenuItem.Text = "Heroes...";
-            heroesToolStripMenuItem.Click += OnExportAsCsv;
-            // 
-            // staticDataToolStripMenuItem
-            // 
-            staticDataToolStripMenuItem.Name = "staticDataToolStripMenuItem";
-            staticDataToolStripMenuItem.Size = new System.Drawing.Size(315, 40);
-            staticDataToolStripMenuItem.Text = "Static Data...";
-            staticDataToolStripMenuItem.Click += OnExportStaticData;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(12F, 30F);
@@ -277,6 +293,8 @@
         private System.Windows.Forms.CheckBox cbIgnoreFoodAndBooks;
         private System.Windows.Forms.ToolStripMenuItem skillExplorerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem heroesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem staticDataToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem staticDataToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
     }
 }

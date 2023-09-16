@@ -11,12 +11,12 @@ namespace Hero_Manager.Data_Model
 {
     internal class HMStaticData
     {
-        private StaticArenaData arenaData;
-        private StaticArtifactData artifactData;
-        private StaticHeroTypeData heroData;
-        private IReadOnlyDictionary<string, string> localizedStrings;
-        private StaticSkillData skillData;
-        private StaticStageData stageData;
+        public StaticArenaData ArenaData { get; private set; }
+        public StaticArtifactData ArtifactData { get; private set; }
+        public StaticHeroTypeData HeroData { get; private set; }
+        public IReadOnlyDictionary<string, string> LocalizedStrings { get; private set; }
+        public StaticSkillData SkillData { get; private set; }
+        public StaticStageData StageData { get; private set; }
 
         public static async Task<HMStaticData> Get(IStaticDataApi staticDataApi)
         {
@@ -30,19 +30,34 @@ namespace Hero_Manager.Data_Model
             return new HMStaticData(arenaData, artifactData, heroData, localizedStrings, skillData, stageData);
         }
 
+        public static async Task<HMStaticData> LoadFromStream(Stream stream)
+        {
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                string json = await reader.ReadToEndAsync();
+                StaticGameData? data = JsonConvert.DeserializeObject<StaticGameData>(json);
+                if (data != null)
+                {
+                    return new HMStaticData(data.ArenaData, data.ArtifactData, data.HeroData, data.LocalizedStrings, data.SkillData, data.StageData);
+                }
+            }
+
+            return null;
+        }
+
         private HMStaticData(StaticArenaData arenaData, StaticArtifactData artifactData, StaticHeroTypeData heroTypeData, IReadOnlyDictionary<string, string> localizedStrings, StaticSkillData skillData, StaticStageData stageData)
         {
-            this.arenaData = arenaData;
-            this.artifactData = artifactData;
-            this.heroData = heroTypeData;
-            this.localizedStrings = localizedStrings;
-            this.skillData = skillData;
-            this.stageData = stageData;
+            this.ArenaData = arenaData;
+            this.ArtifactData = artifactData;
+            this.HeroData = heroTypeData;
+            this.LocalizedStrings = localizedStrings;
+            this.SkillData = skillData;
+            this.StageData = stageData;
         }
 
         public IEnumerable<HeroType> GetHeroTypes()
         {
-            foreach (var hero in this.heroData.HeroTypes.Values)
+            foreach (var hero in this.HeroData.HeroTypes.Values)
             {
                 yield return hero;
             }
@@ -51,7 +66,7 @@ namespace Hero_Manager.Data_Model
         public HeroType GetHeroType(int typeId)
         {
             HeroType val;
-            if (this.heroData.HeroTypes.TryGetValue(typeId, out val))
+            if (this.HeroData.HeroTypes.TryGetValue(typeId, out val))
             {
                 return val;
             }
@@ -62,7 +77,7 @@ namespace Hero_Manager.Data_Model
         public string GetLocalizedString(string key)
         {
             string val;
-            if (this.localizedStrings.TryGetValue(key, out val))
+            if (this.LocalizedStrings.TryGetValue(key, out val))
             {
                 return val;
             }
@@ -72,7 +87,7 @@ namespace Hero_Manager.Data_Model
 
         public IEnumerable<SkillType> GetSkillTypes()
         {
-            foreach (var skill in this.skillData.SkillTypes.Values)
+            foreach (var skill in this.SkillData.SkillTypes.Values)
             {
                 yield return skill;
             }
@@ -81,7 +96,7 @@ namespace Hero_Manager.Data_Model
         public SkillType GetSkillType(int skillTypeId)
         {
             SkillType result;
-            if (!this.skillData.SkillTypes.TryGetValue(skillTypeId, out result))
+            if (!this.SkillData.SkillTypes.TryGetValue(skillTypeId, out result))
             {
                 return null;
             }
@@ -113,12 +128,12 @@ namespace Hero_Manager.Data_Model
         {
             StaticGameData game = new StaticGameData()
             {
-                ArenaData = this.arenaData,
-                ArtifactData = this.artifactData,
-                HeroData = this.heroData,
-                LocalizedStrings = this.localizedStrings,
-                SkillData = this.skillData,
-                StageData = this.stageData,
+                ArenaData = this.ArenaData,
+                ArtifactData = this.ArtifactData,
+                HeroData = this.HeroData,
+                LocalizedStrings = this.LocalizedStrings,
+                SkillData = this.SkillData,
+                StageData = this.StageData,
             };
 
             string json = Serialize.JsonPrettify(JsonConvert.SerializeObject(game));
